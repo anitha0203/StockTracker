@@ -1,0 +1,31 @@
+<div class="all">
+  <h2>Enter the symbol of a stock to track (i.e. AAPL, TSLA, GOOGL) </h2>
+  <input placeholder="stock" type="text" id="addStock" style="margin: 10px 0px;"  [formControl]="stock" />
+  <div *ngIf="stock.invalid && (stock.dirty || stock.touched)">
+      <div *ngIf="stock.errors?.['required']">stock symbol code is required.</div>
+      <div *ngIf="stock.errors?.['pattern']">stock symbol must be 1-5 (A-Z)characters .</div>
+  </div>
+  <br />
+  <button id="addStockBtn" [disabled]="stock.invalid" (click)="addStock()" style="margin: 10px 0px;">
+      Track Stock
+  </button>
+</div>
+
+ <div *ngIf="stockData && stocks" class="all">
+    <div *ngFor="let stock1 of stockData;let indexOfelement=index;">
+      <h3>{{symbol[indexOfelement]}}  ({{stocks[indexOfelement]}})</h3>
+      <p><span style="padding-right: 25px;">Change today: {{stock1.d}}%</span><span>Opening price: $ {{stock1.o}}</span></p>
+      <p><span style="padding-right: 25px;">Current price: {{stock1.c}}</span><span>High price: $ {{stock1.h}}</span></p>
+
+      <div *ngIf="getArrow(stock1.d) else elseBlock" >
+        <h1><i class="fas fa-arrow-up" style="color: green;"></i></h1>
+      </div>
+      <ng-template #elseBlock><h1><i class="fas fa-arrow-down" style="color: red;"></i></h1></ng-template>
+
+      <p>
+          <a [routerLink]="['/sentiment', stocks[indexOfelement]] " >Go to social sentiment details > </a>
+      </p>
+  <div (click)="close(stocks[indexOfelement])">
+      <span class="close">×</span>
+  </div>
+</div>
